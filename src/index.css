@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #075985;
+  --color-primary-hover: #0c4a6e;
+  --color-surface: #f8fafc;
+  --color-surface-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  
+  --color-bg-app: #f8fafc;
+  --color-card: #ffffff;
+}
+
+.dark {
+  --color-primary: #38bdf8;
+  --color-primary-hover: #7dd3fc;
+  --color-surface: #0f172a;
+  --color-surface-hover: #1e293b;
+  --color-border: #334155;
+  --color-text-main: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  
+  --color-bg-app: #020617;
+  --color-card: #0f172a;
+}
+
+@layer base {
+  html, body {
+    @apply bg-bg-app text-text-main antialiased selection:bg-primary/20;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100%;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-card/70 backdrop-blur-md border border-border/50;
+  }
+  
+  .card-shadow {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  }
+  
+  .card-shadow-hover:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full hover:bg-text-muted/30 transition-colors;
+}
