@@ -5,6 +5,12 @@ import {
   Check, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { twMerge } from 'tailwind-merge';
+import { clsx } from 'clsx';
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
 
 export function SettingsModal({ isOpen, onClose, user, isDarkMode, onToggleDarkMode, onLogout, folders, onRenameFolder, onDeleteFolder, onNewFolder }) {
   const [activeTab, setActiveTab] = useState('perfil');

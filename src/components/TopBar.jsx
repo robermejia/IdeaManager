@@ -94,13 +94,6 @@ export function TopBar({ searchQuery, onSearchChange, filter, onFilterChange, is
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            <button 
-              onClick={onSettingsOpen}
-              className="p-2 text-text-muted hover:bg-surface rounded-lg transition-all"
-            >
-              <Settings className="w-5 h-5" />
-            </button>
-
             <button className="p-2 text-text-muted hover:bg-surface rounded-lg transition-all relative hidden md:block">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-card"></span>
