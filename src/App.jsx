@@ -335,6 +335,7 @@ function App() {
         onSelectFolder={setActiveFolderId}
         onNewIdea={() => { setEditingIdea(null); setIsModalOpen(true); }}
         onSidebarToggle={() => setIsSidebarOpen(true)}
+        onSettingsOpen={() => setIsSettingsOpen(true)}
       />
 
       <IdeaModal
