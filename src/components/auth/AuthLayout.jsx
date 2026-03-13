@@ -5,9 +5,9 @@ import { Lightbulb } from 'lucide-react';
 export function AuthLayout({ children, title, subtitle }) {
   return (
     <div className="min-h-screen bg-bg-app flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
-      <div className="max-w-6xl w-full bg-card rounded-[2.5rem] shadow-2xl border border-border overflow-hidden flex flex-col md:flex-row h-full min-h-[700px]">
+      <div className="max-w-6xl w-full bg-card rounded-[2.5rem] shadow-2xl border border-border overflow-hidden flex flex-col md:flex-row h-full md:min-h-[500px]">
         {/* Illustration Side */}
-        <div className="hidden md:flex flex-1 bg-surface p-12 flex-col justify-between items-start relative overflow-hidden">
+        <div className="hidden md:flex flex-1 bg-surface p-8 lg:p-12 flex-col justify-between items-start relative overflow-hidden">
           <div className="flex items-center gap-3 relative z-10">
             <div className="bg-primary p-2.5 rounded-2xl">
               <Lightbulb className="w-8 h-8 text-white" />
@@ -26,7 +26,7 @@ export function AuthLayout({ children, title, subtitle }) {
             <img 
               src={authIllustration} 
               alt="Auth Illustration" 
-              className="w-full h-auto drop-shadow-2xl"
+              className="w-3/4 lg:w-4/5 mx-auto h-auto drop-shadow-2xl"
             />
           </motion.div>
 
@@ -46,10 +46,10 @@ export function AuthLayout({ children, title, subtitle }) {
         </div>
 
         {/* Form Side */}
-        <div className="flex-1 p-8 md:p-16 flex flex-col justify-center">
+        <div className="flex-1 p-6 md:p-10 lg:p-16 flex flex-col justify-center">
           <div className="max-w-md w-full mx-auto">
-            <div className="mb-10">
-              <h1 className="text-3xl font-bold text-text-main mb-3">{title}</h1>
+            <div className="mb-8">
+              <h1 className="text-2xl md:text-3xl font-bold text-text-main mb-2">{title}</h1>
               <p className="text-text-muted font-medium">{subtitle}</p>
             </div>
             {children}
