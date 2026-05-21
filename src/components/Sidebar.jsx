@@ -20,7 +20,7 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export function Sidebar({ folders, activeFolderId, onSelectFolder, onNewIdea, onAddFolder, onSettingsOpen, onDropIdea, onRenameFolder, onDeleteFolder }) {
+export function Sidebar({ folders, activeFolderId, onSelectFolder, onNewIdea, onAddFolder, onSettingsOpen, onDropIdea, onRenameFolder, onDeleteFolder, onTrashOpen, trashCount }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
@@ -184,6 +184,23 @@ export function Sidebar({ folders, activeFolderId, onSelectFolder, onNewIdea, on
             <Settings className="w-5 h-5" />
             {!isCollapsed && <span>Configuración</span>}
           </button>
+
+          <button
+            onClick={onTrashOpen}
+            className="flex items-center gap-3 w-full px-4 py-3 text-text-muted hover:text-red-500 hover:bg-red-500/10 rounded-2xl transition-all font-bold text-sm relative"
+          >
+            <Trash2 className="w-5 h-5" />
+            {!isCollapsed && <span>Papelera</span>}
+            {trashCount > 0 && (
+              <span className={cn(
+                "bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center",
+                isCollapsed ? "absolute -top-1 -right-1 w-4 h-4" : "ml-auto w-5 h-5"
+              )}>
+                {trashCount > 99 ? '99+' : trashCount}
+              </span>
+            )}
+          </button>
+
           <button className="flex items-center gap-3 w-full px-4 py-3 text-text-muted hover:text-text-main hover:bg-surface rounded-2xl transition-all font-bold text-sm">
             <User className="w-5 h-5" />
             {!isCollapsed && <span>Ayuda</span>}

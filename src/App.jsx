@@ -6,6 +6,7 @@ import { TopBar } from './components/TopBar';
 import { IdeaCard } from './components/IdeaCard';
 import { IdeaModal } from './components/IdeaModal';
 import { FolderModal } from './components/FolderModal';
+import { TrashModal } from './components/TrashModal';
 import { EmptyState } from './components/EmptyState';
 import { Toast } from './components/Toast';
 import { useIdeas } from './hooks/useIdeas';
@@ -29,8 +30,9 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   const { 
-    ideas, folders, activeFolderId, setActiveFolderId, 
-    addIdea, updateIdea, deleteIdea, addFolder, deleteFolder, renameFolder,
+    ideas, trashedIdeas, folders, activeFolderId, setActiveFolderId, 
+    addIdea, updateIdea, deleteIdea, restoreIdea, permanentDeleteIdea, emptyTrash,
+    addFolder, deleteFolder, renameFolder,
     loading: ideasLoading
   } = useIdeas(user);
 
@@ -45,6 +47,7 @@ function App() {
   const [authView, setAuthView] = useState('login'); // 'login' or 'register'
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isTrashOpen, setIsTrashOpen] = useState(false);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('idea-manager-dark-mode');
@@ -292,6 +295,8 @@ function App() {
                 }}
                 onRenameFolder={(folder) => { handleOpenFolderModal(folder); setIsSidebarOpen(false); }}
                 onDeleteFolder={(id) => { handleDeleteFolder(id); setIsSidebarOpen(false); }}
+                onTrashOpen={() => { setIsTrashOpen(true); setIsSidebarOpen(false); }}
+                trashCount={trashedIdeas.length}
               />
             </motion.div>
           </div>
@@ -312,6 +317,8 @@ function App() {
           }}
           onRenameFolder={handleOpenFolderModal}
           onDeleteFolder={handleDeleteFolder}
+          onTrashOpen={() => setIsTrashOpen(true)}
+          trashCount={trashedIdeas.length}
         />
       </div>
 
@@ -387,6 +394,8 @@ function App() {
         onNewIdea={() => { setEditingIdea(null); setIsModalOpen(true); }}
         onSidebarToggle={() => setIsSidebarOpen(true)}
         onSettingsOpen={() => setIsSettingsOpen(true)}
+        onTrashOpen={() => setIsTrashOpen(true)}
+        trashCount={trashedIdeas.length}
       />
 
       <IdeaModal
@@ -403,6 +412,25 @@ function App() {
         onClose={() => { setIsFolderModalOpen(false); setEditingFolder(null); }}
         onSubmit={handleFolderSubmit}
         initialFolder={editingFolder}
+      />
+
+      <TrashModal
+        isOpen={isTrashOpen}
+        onClose={() => setIsTrashOpen(false)}
+        trashedIdeas={trashedIdeas}
+        folders={folders}
+        onRestore={async (id) => {
+          try { await restoreIdea(id); showToast('Idea restaurada ✅'); }
+          catch { showToast('❌ Error al restaurar la idea', 'error'); }
+        }}
+        onPermanentDelete={async (id) => {
+          try { await permanentDeleteIdea(id); showToast('Idea eliminada permanentemente', 'info'); }
+          catch { showToast('❌ Error al eliminar', 'error'); }
+        }}
+        onEmptyTrash={async () => {
+          try { await emptyTrash(); showToast('Papelera vaciada', 'info'); }
+          catch { showToast('❌ Error al vaciar la papelera', 'error'); }
+        }}
       />
 
       <SettingsModal 
