@@ -49,7 +49,9 @@ export function useIdeas(user) {
         addFolder('General', userId);
       } else {
         setFolders(foldersData);
-        if (!foldersData.find(f => f.id === activeFolderId)) {
+        // Solo redirigir al primer folder si no hay ninguno seleccionado Y
+        // el usuario no está en la vista general (null = todas las ideas)
+        if (activeFolderId !== null && !foldersData.find(f => f.id === activeFolderId)) {
           setActiveFolderId(foldersData[0].id);
         }
       }
@@ -69,6 +71,7 @@ export function useIdeas(user) {
         id: doc.id,
         ...doc.data(),
         createdAt: doc.data().createdAt?.toDate()?.toISOString() || new Date().toISOString(),
+        updatedAt: doc.data().updatedAt?.toDate()?.toISOString() || null,
         deletedAt: doc.data().deletedAt?.toDate()?.toISOString() || null,
       }));
 
@@ -117,7 +120,7 @@ export function useIdeas(user) {
   const updateIdea = async (id, updates) => {
     try {
       const ideaRef = doc(db, 'ideas', id);
-      await updateDoc(ideaRef, updates);
+      await updateDoc(ideaRef, { ...updates, updatedAt: serverTimestamp() });
     } catch (error) {
       console.error("Error updating idea: ", error);
       throw error;

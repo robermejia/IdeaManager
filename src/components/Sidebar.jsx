@@ -10,7 +10,8 @@ import {
   ChevronLeft,
   Pencil,
   Trash2,
-  MoreHorizontal
+  MoreHorizontal,
+  LayoutGrid
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
@@ -70,9 +71,29 @@ export function Sidebar({ folders, activeFolderId, onSelectFolder, onNewIdea, on
       {/* Nav */}
       <div className="flex-1 overflow-y-auto px-2 space-y-1">
         <div className="px-4 py-2 opacity-40 text-xs font-bold uppercase tracking-wider">
-          {!isCollapsed ? 'Carpetas' : <Inbox className="w-4 h-4 mx-auto" />}
+          {!isCollapsed ? 'Vistas' : <Inbox className="w-4 h-4 mx-auto" />}
         </div>
 
+        {/* Todas las ideas */}
+        <button
+          onClick={() => onSelectFolder(null)}
+          className={cn(
+            "w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all",
+            activeFolderId === null
+              ? "bg-surface text-primary"
+              : "text-text-muted hover:bg-surface hover:text-text-main"
+          )}
+        >
+          <LayoutGrid className={cn(
+            "w-5 h-5 flex-shrink-0",
+            activeFolderId === null ? "text-primary" : "text-text-muted"
+          )} />
+          {!isCollapsed && <span className="font-medium text-sm">Todas las ideas</span>}
+        </button>
+
+        <div className="px-4 py-2 opacity-40 text-xs font-bold uppercase tracking-wider mt-2">
+          {!isCollapsed ? 'Carpetas' : <Folder className="w-4 h-4 mx-auto" />}
+        </div>
         {folders.map((folder) => (
           <div key={folder.id} className="relative group/folder">
             <button

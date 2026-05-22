@@ -38,6 +38,7 @@ function App() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('createdAt'); // 'createdAt' | 'updatedAt'
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
   const [editingIdea, setEditingIdea] = useState(null);
@@ -118,7 +119,7 @@ function App() {
 
   const filteredIdeas = useMemo(() => {
     return ideas
-      .filter(idea => !activeFolderId || idea.folderId === activeFolderId)
+      .filter(idea => activeFolderId === null || idea.folderId === activeFolderId)
       .filter(idea => {
         if (filter === 'completed') return idea.completed;
         if (filter === 'pending') return !idea.completed;
@@ -132,8 +133,16 @@ function App() {
           (idea.description?.toLowerCase().includes(search)) ||
           (idea.tags?.some(t => t.toLowerCase().includes(search)))
         );
+      })
+      .sort((a, b) => {
+        if (sortBy === 'updatedAt') {
+          const aDate = a.updatedAt || a.createdAt;
+          const bDate = b.updatedAt || b.createdAt;
+          return new Date(bDate) - new Date(aDate);
+        }
+        return new Date(b.createdAt) - new Date(a.createdAt);
       });
-  }, [ideas, activeFolderId, filter, searchQuery]);
+  }, [ideas, activeFolderId, filter, searchQuery, sortBy]);
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -346,16 +355,43 @@ function App() {
             <div>
               <div className="flex items-center gap-3 text-primary font-bold text-sm uppercase tracking-widest mb-2 opacity-80">
                 <div className="w-8 h-[2px] bg-primary/30 rounded-full"></div>
-                {activeFolderName}
+                {activeFolderId === null ? 'Vista general' : activeFolderName}
               </div>
               <h1 className="text-4xl font-extrabold text-text-main tracking-tight">
-                Mis Ideas
+                {activeFolderId === null ? 'Todas las Ideas' : 'Mis Ideas'}
               </h1>
             </div>
             
-            <p className="text-text-muted font-medium bg-card px-4 py-2 rounded-xl border border-border shadow-sm">
-              <span className="text-primary font-bold">{filteredIdeas.length}</span> {filteredIdeas.length === 1 ? 'idea' : 'ideas'} en total
-            </p>
+            <div className="flex items-center gap-3">
+              {/* Selector de orden — solo visible en vista general */}
+              {activeFolderId === null && (
+                <div className="flex items-center gap-1 bg-card border border-border rounded-xl p-1">
+                  <button
+                    onClick={() => setSortBy('createdAt')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      sortBy === 'createdAt'
+                        ? 'bg-primary text-white shadow-sm'
+                        : 'text-text-muted hover:text-text-main'
+                    }`}
+                  >
+                    Creación
+                  </button>
+                  <button
+                    onClick={() => setSortBy('updatedAt')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      sortBy === 'updatedAt'
+                        ? 'bg-primary text-white shadow-sm'
+                        : 'text-text-muted hover:text-text-main'
+                    }`}
+                  >
+                    Modificación
+                  </button>
+                </div>
+              )}
+              <p className="text-text-muted font-medium bg-card px-4 py-2 rounded-xl border border-border shadow-sm">
+                <span className="text-primary font-bold">{filteredIdeas.length}</span> {filteredIdeas.length === 1 ? 'idea' : 'ideas'} en total
+              </p>
+            </div>
           </header>
 
           <AnimatePresence mode="popLayout">

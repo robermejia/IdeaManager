@@ -1,4 +1,4 @@
-import { CheckCircle2, Circle, Edit2, Trash2, Calendar, Tag, Folder } from 'lucide-react';
+import { CheckCircle2, Circle, Edit2, Trash2, Calendar, Tag, Folder, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
@@ -10,6 +10,7 @@ function cn(...inputs) {
 export function IdeaCard({ idea, folderName, onToggleComplete, onEdit, onDelete, onDragStart }) {
   const tags = Array.isArray(idea?.tags) ? idea.tags : [];
   const createdAt = idea?.createdAt ? new Date(idea.createdAt) : new Date();
+  const updatedAt = idea?.updatedAt ? new Date(idea.updatedAt) : null;
 
   return (
     <motion.div
@@ -79,6 +80,12 @@ export function IdeaCard({ idea, folderName, onToggleComplete, onEdit, onDelete,
             <Calendar className="w-3.5 h-3.5" />
             <span>{createdAt.toLocaleDateString()}</span>
           </div>
+          {updatedAt && (
+            <div className="flex items-center gap-1.5 text-primary/60">
+              <Clock className="w-3.5 h-3.5" />
+              <span>{updatedAt.toLocaleDateString()}</span>
+            </div>
+          )}
           <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface">
             <Folder className="w-3.5 h-3.5" />
             <span>{folderName}</span>
