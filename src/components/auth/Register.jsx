@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, ArrowLeft } from 'lucide-react';
 
-export function Register({ onRegister, onGoogleLogin, onNavigateLogin }) {
+export function Register({ onRegister, onGoogleLogin, onNavigateLogin, onBack }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -126,6 +126,17 @@ export function Register({ onRegister, onGoogleLogin, onNavigateLogin }) {
           Inicia sesión
         </button>
       </p>
+
+      {onBack && (
+        <button
+          onClick={onBack}
+          type="button"
+          className="flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-text-main transition-colors mt-3 mx-auto"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Volver al inicio
+        </button>
+      )}
     </form>
   );
 }

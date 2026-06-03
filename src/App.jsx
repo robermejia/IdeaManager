@@ -13,6 +13,7 @@ import { useIdeas } from './hooks/useIdeas';
 import { AuthLayout } from './components/auth/AuthLayout';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
+import { LandingPage } from './components/LandingPage';
 import { SettingsModal } from './components/SettingsModal';
 import { BottomNav } from './components/BottomNav';
 import { auth, googleProvider } from './lib/firebase';
@@ -45,7 +46,7 @@ function App() {
   const [editingFolder, setEditingFolder] = useState(null);
   const [toast, setToast] = useState(null);
   const [draggedIdeaId, setDraggedIdeaId] = useState(null);
-  const [authView, setAuthView] = useState('login'); // 'login' or 'register'
+  const [authView, setAuthView] = useState('landing'); // 'landing' | 'login' | 'register'
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTrashOpen, setIsTrashOpen] = useState(false);
@@ -228,12 +229,26 @@ function App() {
   if (!user) {
     return (
       <AnimatePresence mode="wait">
-        {authView === 'login' ? (
+        {authView === 'landing' && (
+          <motion.div
+            key="landing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <LandingPage
+              onNavigateLogin={() => setAuthView('login')}
+              onNavigateRegister={() => setAuthView('register')}
+            />
+          </motion.div>
+        )}
+        {authView === 'login' && (
           <motion.div
             key="login"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3 }}
           >
             <AuthLayout 
@@ -243,16 +258,18 @@ function App() {
               <Login 
                 onLogin={handleLogin} 
                 onGoogleLogin={handleGoogleLogin}
-                onNavigateRegister={() => setAuthView('register')} 
+                onNavigateRegister={() => setAuthView('register')}
+                onBack={() => setAuthView('landing')}
               />
             </AuthLayout>
           </motion.div>
-        ) : (
+        )}
+        {authView === 'register' && (
           <motion.div
             key="register"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3 }}
           >
             <AuthLayout 
@@ -262,7 +279,8 @@ function App() {
               <Register 
                 onRegister={handleRegister} 
                 onGoogleLogin={handleGoogleLogin}
-                onNavigateLogin={() => setAuthView('login')} 
+                onNavigateLogin={() => setAuthView('login')}
+                onBack={() => setAuthView('landing')}
               />
             </AuthLayout>
           </motion.div>

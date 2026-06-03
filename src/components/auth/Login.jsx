@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 
-export function Login({ onLogin, onGoogleLogin, onNavigateRegister }) {
+export function Login({ onLogin, onGoogleLogin, onNavigateRegister, onBack }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -93,6 +93,17 @@ export function Login({ onLogin, onGoogleLogin, onNavigateRegister }) {
           Crear cuenta
         </button>
       </p>
+
+      {onBack && (
+        <button
+          onClick={onBack}
+          type="button"
+          className="flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-text-main transition-colors mt-3 mx-auto"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Volver al inicio
+        </button>
+      )}
     </form>
   );
 }
