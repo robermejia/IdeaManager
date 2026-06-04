@@ -240,6 +240,8 @@ function App() {
             <LandingPage
               onNavigateLogin={() => setAuthView('login')}
               onNavigateRegister={() => setAuthView('register')}
+              isDarkMode={isDarkMode}
+              onToggleDarkMode={toggleDarkMode}
             />
           </motion.div>
         )}

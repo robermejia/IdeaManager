@@ -3,13 +3,14 @@ import { Lightbulb } from 'lucide-react';
 
 export function AuthLayout({ children, title, subtitle }) {
   return (
-    <div className="min-h-screen bg-bg-app flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="w-full max-w-md bg-card rounded-3xl shadow-2xl border border-border overflow-hidden"
-      >
+    <div className="h-screen w-full overflow-y-auto bg-bg-app transition-colors duration-300">
+      <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="w-full max-w-md bg-card rounded-3xl shadow-2xl border border-border overflow-hidden"
+        >
         {/* Top accent bar */}
         <div className="h-1 w-full bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
 
@@ -34,5 +35,6 @@ export function AuthLayout({ children, title, subtitle }) {
         </div>
       </motion.div>
     </div>
+   </div>
   );
 }

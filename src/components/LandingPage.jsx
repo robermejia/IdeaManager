@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Lightbulb, Zap, FolderOpen, Shield, ArrowRight, Star } from 'lucide-react';
+import { Lightbulb, Zap, FolderOpen, Shield, ArrowRight, Star, Sun, Moon } from 'lucide-react';
 import authIllustration from '../assets/auth_illustration.png';
 
 const features = [
@@ -33,36 +33,45 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 };
 
-export function LandingPage({ onNavigateLogin, onNavigateRegister }) {
+export function LandingPage({ onNavigateLogin, onNavigateRegister, isDarkMode, onToggleDarkMode }) {
   return (
-    <div className="min-h-screen bg-bg-app text-text-main overflow-x-hidden transition-colors duration-300">
+    <div className="h-screen w-full overflow-y-auto bg-bg-app text-text-main overflow-x-hidden transition-colors duration-300">
 
       {/* ── Navbar ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 bg-bg-app/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center gap-2.5">
-          <div className="bg-primary p-2 rounded-xl">
-            <Lightbulb className="w-5 h-5 text-white" />
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-app/80 backdrop-blur-md border-b border-border py-4">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-4 sm:px-6 md:px-16 lg:px-24">
+          <div className="flex items-center gap-2">
+            <div className="bg-primary p-2 rounded-xl">
+              <Lightbulb className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-extrabold text-xl tracking-tight text-text-main hidden sm:inline">IdeaManager</span>
           </div>
-          <span className="font-extrabold text-xl tracking-tight text-text-main">IdeaManager</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onNavigateLogin}
-            className="px-4 py-2 rounded-xl text-sm font-bold text-text-muted hover:text-text-main transition-colors"
-          >
-            Iniciar sesión
-          </button>
-          <button
-            onClick={onNavigateRegister}
-            className="px-4 py-2 rounded-xl text-sm font-bold bg-primary text-white hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
-          >
-            Empezar gratis
-          </button>
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <button 
+              onClick={onToggleDarkMode}
+              className="p-2 text-text-muted hover:bg-card hover:text-text-main rounded-xl transition-all border border-transparent hover:border-border"
+              aria-label="Cambiar tema"
+            >
+              {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
+            </button>
+            <button
+              onClick={onNavigateLogin}
+              className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-text-muted hover:text-text-main transition-colors whitespace-nowrap"
+            >
+              Iniciar sesión
+            </button>
+            <button
+              onClick={onNavigateRegister}
+              className="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-primary text-white hover:bg-primary-hover transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
+            >
+              Empezar gratis
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* ── Hero ── */}
-      <section className="relative flex flex-col lg:flex-row items-center justify-center gap-10 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto" style={{ minHeight: 'calc(100vh - 65px)', marginTop: '65px' }}>
+      <section className="relative flex flex-col lg:flex-row items-center justify-center gap-10 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto pt-12 lg:pt-0" style={{ minHeight: 'calc(100vh - 72px)', marginTop: '72px' }}>
         {/* Decorative blobs */}
         <div className="absolute top-20 left-0 w-96 h-96 bg-primary/8 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary/6 rounded-full blur-3xl pointer-events-none" />
@@ -72,7 +81,7 @@ export function LandingPage({ onNavigateLogin, onNavigateRegister }) {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex-1 relative z-10"
+          className="w-full lg:flex-1 relative z-10"
         >
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border border-primary/20">
             <Star className="w-3 h-3 fill-primary" />
@@ -123,7 +132,7 @@ export function LandingPage({ onNavigateLogin, onNavigateRegister }) {
           initial={{ opacity: 0, scale: 0.88, x: 40 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut', delay: 0.3 }}
-          className="flex-1 flex justify-center items-center relative z-10 w-full max-w-lg lg:max-w-none"
+          className="w-full lg:flex-1 flex justify-center items-center relative z-10 max-w-lg lg:max-w-none"
         >
           <div className="relative">
             <div className="absolute inset-0 bg-primary/10 rounded-3xl blur-2xl scale-110" />
@@ -201,11 +210,15 @@ export function LandingPage({ onNavigateLogin, onNavigateRegister }) {
 
       {/* ── Footer ── */}
       <footer className="border-t border-border px-6 md:px-16 py-8 text-center">
-        <div className="flex items-center justify-center gap-2 text-text-muted text-sm font-medium">
-          <div className="bg-primary/10 p-1.5 rounded-lg">
-            <Lightbulb className="w-4 h-4 text-primary" />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-text-muted text-sm font-medium">
+          <div className="flex items-center gap-2">
+            <div className="bg-primary/10 p-1.5 rounded-lg">
+              <Lightbulb className="w-4 h-4 text-primary" />
+            </div>
+            <span>IdeaManager © {new Date().getFullYear()} — Organiza tus pensamientos con inteligencia.</span>
           </div>
-          <span>IdeaManager © {new Date().getFullYear()} — Organiza tus pensamientos con inteligencia.</span>
+          <span className="hidden sm:inline">•</span>
+          <span>Desarrollado por Roberto Agustín Mejía Collazos</span>
         </div>
       </footer>
     </div>
